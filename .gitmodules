@@ -1,0 +1,3 @@
+[submodule "pyrtfdom"]
+	path = pyrtfdom
+	url = https://github.com/CyberPunk2049/pyrtfdom.git
