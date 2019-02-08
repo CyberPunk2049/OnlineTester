@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block main %}
+    <a class="btn btn-primary" href={{ url_for('demonstrator.index') }}>Демонстратор</a><br>
+    <a class="btn btn-primary" href={{ url_for('estimator.index') }}>Результаты тестов</a><br>
+    <a class="btn btn-primary" href={{ url_for('administrator.logout') }}>Выход</a><br>
+{% endblock %}

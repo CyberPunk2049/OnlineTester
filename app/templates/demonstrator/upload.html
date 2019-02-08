@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block main%}
+    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
+    <a class="btn btn-primary" href={{ url_for('administrator.index') }}>Назад</a><br>
+{% endblock %}

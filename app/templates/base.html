@@ -1,0 +1,40 @@
+{% extends "bootstrap/base.html" %}
+
+    {% block title %}
+        {{ values.title }}
+    {% endblock %}
+
+
+    {% block navbar %}
+        <nav class="navbar navbar-default">
+            <div class="container">
+            {% if values.login_required %}
+            {{ session.id}}&nbsp
+            {{ session.subject_name }}
+                <br>
+                {% endif %}
+            </div>
+        {% if values.errors %}
+            {% for error in values.errors %}
+                <p>
+                    {{ error }}
+                </p>
+            {% endfor%}
+        {% endif %}
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {{ message }}<br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </nav>
+    {% endblock %}
+
+
+    {% block content %}
+    <div class="container">
+        {% block main %}
+        {% endblock %}
+    </div>
+    {% endblock %}
