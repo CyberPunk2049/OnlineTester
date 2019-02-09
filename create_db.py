@@ -5,6 +5,8 @@ import random
 from app.administrator.models import User, Sessions, Subject, TestStatus
 from app.demonstrator.models import Theme, Special
 
+# Скрипт для создания и заполнения фиксированных таблиц в базе данных.
+
 app = create_app(config.DevelopmentConfig)
 
 

@@ -1,5 +1,30 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
+    {% for num in range(values.quest_num) %}
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <p>{{ values.variant1.questions[num].name }}</p>
+                <p>{{ values.variant1.questions[num].text }}</p>
+                <ol>
+                {% for answer in values.variant1.questions[num].answers %}
+                    <li>{{ answer }}</li>
+                {% endfor %}
+                </ol>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <p>{{ values.variant2.questions[num].name }}</p>
+                <p>{{ values.variant2.questions[num].text }}</p>
+                <ol>
+                {% for answer in values.variant2.questions[num].answers %}
+                    <li>{{ answer }}</li>
+                {% endfor %}
+                </ol>
+            </div>
+        </div>
+    {% endfor %}
+    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
+    <a class="btn btn-primary" href={{ url_for('demonstrator.upload') }}>Отменить</a><br>
 
 {% endblock %}

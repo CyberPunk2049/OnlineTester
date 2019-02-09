@@ -4,9 +4,15 @@ from wtforms import SubmitField, IntegerField, SelectField
 
 
 class UploadFilesForm(FlaskForm):
-    num = IntegerField('Num', default=0)
-    theme = SelectField('Theme', coerce=int)
-    special = SelectField('Special', coerce=int)
-    variant1 = FileField(validators=[FileRequired()])
-    variant2 = FileField(validators=[FileRequired()])
+    num = IntegerField('Номер', default=0)
+    theme = SelectField('Тема', coerce=int)
+    special = SelectField('Специальность', coerce=int)
+    variant1 = FileField('Вариант 1', validators=[FileRequired()])
+    variant2 = FileField('Вариант 2', validators=[FileRequired()])
     submit = SubmitField('Загрузить')
+
+
+class TestStartForm(FlaskForm):
+    num = IntegerField('Время вопроса', default=20)
+    submit = SubmitField('Начать тестирование')
+
