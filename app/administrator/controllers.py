@@ -34,14 +34,10 @@ def login():
         'errors': [],
         'form': LoginForm()
     }
-
+    #TODO Разобраться с переходом по ссылке браузера
     values['form'].subject.choices = [(i.id, i.name) for i in Subject.query.all()]
 
-    if request.method == 'GET' and 'id' in session:
-        return redirect(url_for('administrator.index'))
-
     if values['form'].validate_on_submit():
-    #TODO Разобраться с логином и паролем при повторном входе
         if User.query.filter_by(username=values['form'].username.data, password=values['form'].password.data).all():
             sessionparams = Sessions.query.get(1)
             sessionparams.subject = values['form'].subject.data
@@ -50,6 +46,7 @@ def login():
             session['subject_name'] = Subject.query.get(sessionparams.subject).name
             session['test_status'] = sessionparams.test_status
             session['quest_num'] = sessionparams.quest_num
+            session['quest_time'] = sessionparams.quest_time
             db.session.commit()
             return redirect(url_for('administrator.index'))
         else:
@@ -61,7 +58,8 @@ def login():
 @administrator.route('logout/')
 @login_require
 def logout():
-    del session['id']
+    for key in list(session.keys()):
+        del session[key]
     return redirect(url_for('administrator.login'))
 
 

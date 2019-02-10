@@ -13,6 +13,6 @@ class UploadFilesForm(FlaskForm):
 
 
 class TestStartForm(FlaskForm):
-    num = IntegerField('Время вопроса', default=20)
+    quest_time = IntegerField('Время вопроса')
     submit = SubmitField('Начать тестирование')
 

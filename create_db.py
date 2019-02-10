@@ -62,5 +62,5 @@ with app.app_context():
         db.session.add(User(username=user['login'], password=user['password']))
     db.session.commit()
 
-    db.session.add(Sessions(session_id=random.randint(0, 1000), subject=1, test_status=1, quest_num=1))
+    db.session.add(Sessions(session_id=random.randint(0, 1000), subject=1, test_status=1, quest_num=1, quest_time=20))
     db.session.commit()

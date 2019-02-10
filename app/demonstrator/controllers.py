@@ -37,9 +37,9 @@ def index():
 @demonstrator.route('upload/', methods=['GET', 'POST'])
 @login_require
 def upload():
-    print(request.referrer)
-    if request.referrer == None:
-        redirect(url_for('demonstrator.index'))
+
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
 
     values = {
         'title': 'Демонстратор:загрузка',
@@ -104,6 +104,9 @@ def upload():
 @login_require
 def test_start():
 
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
+
     values = {
         'title': 'Демонстратор: Старт',
         'login_required': True,
@@ -114,8 +117,10 @@ def test_start():
     if values['form'].validate_on_submit():
         sessionparams = Sessions.query.get(1)
         sessionparams.test_status = 3
-        session['test_status'] = 3
+        sessionparams.quest_time = values['form'].quest_time.data
         db.session.commit()
+        session['test_status'] = 3
+        session['quest_time'] = sessionparams.quest_time
         return redirect(url_for('demonstrator.index'))
     else:
         variant2 = {
@@ -129,7 +134,7 @@ def test_start():
         for variant in [variant1, variant2]:
             variant['variant'] = Test.query.get(variant['id']).variant
             for question in Question.query.filter_by(test_id=variant['id']).order_by('num'):
-                answers = Answer.query.filter_by(question_id=question.id)
+                answers = Answer.query.filter_by(question_id=question.id).order_by('num')
                 variant['questions'].append({
                     'name': question.name,
                     'text': question.text,
@@ -139,6 +144,7 @@ def test_start():
 
         values['variant1'], values['variant2'] = variant1, variant2
         values['quest_num'] = max(len(variant1['questions']), len(variant2['questions']))
+        values['form'].quest_time.data = session['quest_time']
 
         for key in values['form'].errors:
             values['errors'].append(values['form'].errors[key])
@@ -150,6 +156,9 @@ def test_start():
 @login_require
 def test_process():
 
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
+
     values = {
         'title': 'Демонстратор: Идёт теститорвание',
         'login_required': True,
@@ -157,12 +166,34 @@ def test_process():
         'form': None
     }
 
+    variant2 = {
+        'id': db.session.query(db.func.max(Test.id)).scalar(),
+        'question': {},
+    }
+    variant1 = {
+        'id': variant2['id'] - 1,
+        'question': {}
+    }
+    sessionparams = Sessions.query.get(1)
+    for variant in [variant1, variant2]:
+        variant['variant'] = Test.query.get(variant['id']).variant
+        question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
+        variant['question']['name'] = question.name
+        variant['question']['text'] = question.text
+        answers = Answer.query.filter_by(question_id=question.id).order_by('num')
+        variant['question']['answers'] = [answer.text for answer in answers]
+
+    values['variant1'], values['variant2'] = variant1, variant2
+
     return render_template('demonstrator/test_process.html', values=values)
 
 
 @demonstrator.route('test_finish/', methods=['GET', 'POST'])
 @login_require
 def test_finish():
+
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
 
     values = {
         'title': 'Демонстратор:тестирование окончено',

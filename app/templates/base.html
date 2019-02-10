@@ -38,3 +38,9 @@
             {% endblock %}
         </div>
     {% endblock %}
+
+    {% block scripts%}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='js/onlinetester.js') }}"></script>
+
+    {% endblock %}
