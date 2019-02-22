@@ -3,9 +3,11 @@
 
 {% block main%}
     {% for num in range(values.quest_num) %}
-        {% with question1 = values.variant1.questions[num], question2 =values.variant1.questions[num] %}
-            {% include 'demonstrator/question.html' %}
-    {% endwith %}
+        <div class="row">
+            {% with question1 = values.variant1.questions[num], question2 =values.variant1.questions[num] %}
+                {% include 'demonstrator/question.html' %}
+            {% endwith %}
+        </div>
     {% endfor %}
     {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
     <a id="cancel_btn" class="btn btn-primary" href={{ url_for('demonstrator.upload') }}>Отменить</a><br>

@@ -2,12 +2,14 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
+    <div class="row">
     {% with question1 = values.variant1.question, question2 = values.variant2.question %}
         {% include 'demonstrator/question.html' %}
     {% endwith %}
-    <div class="progress" style="height: 30px;">
-      <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="200"></div>
     </div>
-    <a id="cancel_btn" class="btn btn-primary" href={{ url_for('demonstrator.upload') }}>Приостановить</a><br>
+    <div class="progress" style="height: 30px;">
+      <div class="progress-bar" role="progressbar" style="width: 0%; transition:none;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="1500"></div>
+    </div>
+    <div id="control_btn" class="btn btn-primary" >Запустить тестирование</div><br>
     <a id="cancel_btn" class="btn btn-primary" href={{ url_for('demonstrator.upload') }}>Отменить</a><br>
 {% endblock %}

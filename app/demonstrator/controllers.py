@@ -203,3 +203,31 @@ def test_finish():
     }
 
     return render_template('inprocess.html', values=values)
+
+
+@demonstrator.route('_new_question/', methods=['GET', 'POST'])
+@login_require
+def new_question():
+
+
+    variant2 = {
+        'id': db.session.query(db.func.max(Test.id)).scalar(),
+        'question': {},
+    }
+    variant1 = {
+        'id': variant2['id'] - 1,
+        'question': {}
+    }
+    sessionparams = Sessions.query.get(1)
+    sessionparams.quest_num += 1
+    db.session.commit()
+    session['quest_num'] = sessionparams.quest_num
+    for variant in [variant1, variant2]:
+        variant['variant'] = Test.query.get(variant['id']).variant
+        question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
+        variant['question']['name'] = question.name
+        variant['question']['text'] = question.text
+        answers = Answer.query.filter_by(question_id=question.id).order_by('num')
+        variant['question']['answers'] = [answer.text for answer in answers]
+
+    return render_template('demonstrator/question.html', question1=variant1['question'], question2=variant2['question'])

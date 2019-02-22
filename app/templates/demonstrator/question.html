@@ -1,20 +1,19 @@
-    <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <p>{{ question1.name }}</p>
-                <p>{{ question1.text }}</p>
-                <ol>
-                {% for answer in question1.answers %}
-                    <li>{{ answer }}</li>
-                {% endfor %}
-                </ol>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <p>{{ question2.name }}</p>
-                <p>{{ question2.text }}</p>
-                <ol>
-                {% for answer in question2.answers %}
-                    <li>{{ answer }}</li>
-                {% endfor %}
-                </ol>
-            </div>
-    </div>
+
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+    <p>{{ question1.name }}</p>
+    <p>{{ question1.text }}</p>
+    <ol>
+    {% for answer in question1.answers %}
+        <li>{{ answer }}</li>
+    {% endfor %}
+    </ol>
+</div>
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+    <p>{{ question2.name }}</p>
+    <p>{{ question2.text }}</p>
+    <ol>
+    {% for answer in question2.answers %}
+        <li>{{ answer }}</li>
+    {% endfor %}
+    </ol>
+</div>
