@@ -1,6 +1,7 @@
 import config
 from app import create_app
 
+app = create_app(config.ProductionConfig)
+
 if __name__ == '__main__':
-    application = create_app(config.ProductionConfig)
-    application.run()
+    app.run()
