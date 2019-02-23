@@ -55,6 +55,10 @@ def upload():
         variant1 = dict(request.files)['variant1']
         variant2 = dict(request.files)['variant2']
 
+        if not variant1 or not variant2:
+            values['errors'].append(u'Не удаётся загрузить тесты, ошибка загрузки файлов')
+            return render_template('demonstrator/upload.html', values=values)
+
         if not allowed_file(variant1.filename, current_app.config['ALLOWED_EXTENSIONS']):
             values['errors'].append(u'Загружаемые файлы должны иметь расширение .rtf')
             return render_template('demonstrator/upload.html', values=values)
