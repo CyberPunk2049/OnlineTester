@@ -2,6 +2,13 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
+    <div class="row">
+    <p>{{ values.special }}</p>
+    <p>{{ values.theme }}</p>
+        {% if values.num != 0 %}
+            <p>{{ values.num }}</p>
+        {% endif %}
+    </div>
     {% for num in range(values.quest_num) %}
         <div class="row">
             {% with question1 = values.variant1.questions[num], question2 =values.variant1.questions[num] %}

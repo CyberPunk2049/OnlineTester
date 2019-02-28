@@ -28,13 +28,16 @@ def index():
 @administrator.route('login/', methods=['GET', 'POST'])
 def login():
 
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
+
     values = {
         'title': 'Авторизация',
         'login_required': False,
         'errors': [],
         'form': LoginForm()
     }
-    #TODO Разобраться с переходом по ссылке браузера
+
     values['form'].subject.choices = [(i.id, i.name) for i in Subject.query.all()]
 
     if values['form'].validate_on_submit():
@@ -46,6 +49,7 @@ def login():
             session['subject_name'] = Subject.query.get(sessionparams.subject).name
             session['test_status'] = sessionparams.test_status
             session['quest_num'] = sessionparams.quest_num
+            session['quest_max'] = sessionparams.quest_max
             session['quest_time'] = sessionparams.quest_time
             db.session.commit()
             return redirect(url_for('administrator.index'))

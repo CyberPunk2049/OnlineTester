@@ -10,7 +10,7 @@ def login_require(f):
         if len(session) != 0:
             actual_login = True
             sessionparams = Sessions.query.get(1)
-            for key in ['subject', 'test_status', 'quest_num', 'quest_time']:
+            for key in ['subject', 'test_status', 'quest_num', 'quest_time', 'quest_max']:
                 if session.get(key) != getattr(sessionparams, key, None):
                     actual_login = False
                     break

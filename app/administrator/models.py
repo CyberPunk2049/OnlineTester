@@ -25,6 +25,7 @@ class Sessions(db.Model):
     subject = db.Column(db.Integer, db.ForeignKey('subject.id'))
     test_status = db.Column(db.Integer, db.ForeignKey('test_status.id'))
     quest_num = db.Column(db.Integer, default=0)
+    quest_max = db.Column(db.Integer, default=0)
     quest_time = db.Column(db.Integer, default=20)
 
 

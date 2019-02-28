@@ -16,3 +16,7 @@ class TestStartForm(FlaskForm):
     quest_time = IntegerField('Время вопроса')
     submit = SubmitField('Начать тестирование')
 
+
+class TestFinishForm(FlaskForm):
+    submit = SubmitField('Закончить тестирование')
+
