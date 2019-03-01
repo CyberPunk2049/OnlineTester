@@ -7,7 +7,7 @@ from app.demonstrator.models import Theme, Special
 
 # Скрипт для создания и заполнения фиксированных таблиц в базе данных.
 
-app = create_app(config.DevelopmentConfig)
+app = create_app(config.ProductionConfig)
 
 
 with app.app_context():
@@ -17,7 +17,7 @@ with app.app_context():
 
     subjects = [
         'Биология',
-        'Физиология',
+        'Норм. физиология',
     ]
     for name in subjects:
         db.session.add(Subject(name=name))
@@ -33,8 +33,10 @@ with app.app_context():
     db.session.commit()
 
     specials = [
-        'Стоматологи',
-        'Лечебники',
+        'Лечебное дело',
+        'Стоматология',
+        'Сестринское дело',
+        'Фармация'
     ]
 
     for name in specials:
@@ -55,7 +57,7 @@ with app.app_context():
     users = [
         {
             'login': 'teacher',
-            'password': '12345'
+            'password': 'cfbh32'
         }
     ]
     for user in users:

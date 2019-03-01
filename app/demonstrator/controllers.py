@@ -42,6 +42,7 @@ def upload():
 
     values = {
         'title': 'Демонстратор:загрузка',
+        'page_info': 'Выберите название тестирования и варианты тестов',
         'login_required': True,
         'errors': [],
         'form': UploadFilesForm()
@@ -113,6 +114,7 @@ def test_start():
 
     values = {
         'title': 'Демонстратор: Старт',
+        'page_info': 'Проверьте загрузку и установите время вопроса',
         'login_required': True,
         'errors': [],
         'form': TestStartForm()
@@ -175,6 +177,7 @@ def test_process():
 
     values = {
         'title': 'Демонстратор: Идёт теститорвание',
+        'page_info': 'Тестирование приостановлено',
         'login_required': True,
         'errors': [],
         'form': None
@@ -226,6 +229,7 @@ def test_finish():
 
     values = {
         'title': 'Демонстратор:тестирование окончено',
+        'page_info': 'Тестирование закончено',
         'login_required': True,
         'errors': [],
         'form': TestFinishForm()

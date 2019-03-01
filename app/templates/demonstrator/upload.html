@@ -2,6 +2,42 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
-    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
-    <a class="btn btn-primary" href={{ url_for('administrator.index') }}>Назад</a><br>
+    <div class="row justify-content-center" style="height:60vh">
+        <div class="card border-0 p-4 m-auto" style="background-color: #f8f9fa;">
+            <form action="" method="post" class="form" enctype="multipart/form-data" role="form">
+                {{ values.form.csrf_token}}
+                <div class="row">
+                    <div class="col">
+                        {{ values.form.num.label(class="form-control-label") }}
+                        {{ values.form.num(class="form-control") }}
+                    </div>
+                    <div class="col">
+                        {{ values.form.theme.label(class="form-control-label") }}
+                        {{ values.form.theme(class="form-control") }}
+                    </div>
+                    <div class="col">
+                        {{ values.form.special.label(class="form-control-label") }}
+                        {{ values.form.special(class="form-control") }}
+                    </div>
+                </div>
+                <div class="form-group  required"">
+
+                        {{ values.form.variant1.label(class="form-control-label") }}
+                        {{ values.form.variant1(class="form-control") }}
+
+                        {{ values.form.variant2.label(class="form-control-label") }}
+                        {{ values.form.variant2(class="form-control") }}
+                </div>
+                <div class="row text-center py-2">
+                    <div class="col">
+                        {{ values.form.submit(class="btn btn-success") }}
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-primary" href={{ url_for('administrator.index') }}>Назад</a>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
 {% endblock %}

@@ -17,6 +17,7 @@ def index():
 
     values = {
         'title': 'Авторизация',
+        'page_info':'Выберите действие',
         'login_required': True,
         'errors': [],
         'form': None
@@ -28,11 +29,9 @@ def index():
 @administrator.route('login/', methods=['GET', 'POST'])
 def login():
 
-    if not request.referrer:
-        return redirect(url_for('administrator.index'))
-
     values = {
         'title': 'Авторизация',
+        'page_info': 'Выберите предмет и введите логин и пароль преподавателя',
         'login_required': False,
         'errors': [],
         'form': LoginForm()
@@ -43,6 +42,10 @@ def login():
     if values['form'].validate_on_submit():
         if User.query.filter_by(username=values['form'].username.data, password=values['form'].password.data).all():
             sessionparams = Sessions.query.get(1)
+            if values['form'].subject.data != sessionparams.subject and sessionparams.test_status != 1:
+                values['errors'].append('Имеется незаконченный тест по предмету' +
+                                        str(Subject.query.get(sessionparams.subject).name))
+                return render_template('administrator/login.html', values=values)
             sessionparams.subject = values['form'].subject.data
             session['id'] = sessionparams.session_id
             session['subject'] = sessionparams.subject

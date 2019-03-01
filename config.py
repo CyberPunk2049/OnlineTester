@@ -19,7 +19,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql://admin:ecvr59b@localhost/online_tester-prod'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:beBl9iPxNr@localhost/online_tester-prod'
 
 
 class DevelopmentConfig(Config):

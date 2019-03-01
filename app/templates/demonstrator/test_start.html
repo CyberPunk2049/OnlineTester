@@ -3,20 +3,54 @@
 
 {% block main%}
     <div class="row">
-    <p>{{ values.special }}</p>
-    <p>{{ values.theme }}</p>
-        {% if values.num != 0 %}
-            <p>{{ values.num }}</p>
-        {% endif %}
+        <div class="p-1 m-auto text-center" style="font-size:1.5rem">
+            Тест:
+            &nbsp
+            {% if values.num != 0 %}
+                {{ values.num }}
+                &nbsp
+            {% endif %}
+            {{ values.theme }}
+            &nbsp
+            {{ values.special }}
+        </div>
+    </div>
+    <div class="row">
+            <div class="p-1 m-auto text-center" style="font-size:1.2rem">
+                Вариант I ({{ values.variant1.variant }})
+            </div>
+            <div class="p-1 m-auto text-center" style="font-size:1.2rem">
+                Вариант II ({{ values.variant2.variant }})
+            </div>
     </div>
     {% for num in range(values.quest_num) %}
-        <div class="row">
+        <div class="card-deck">
             {% with question1 = values.variant1.questions[num], question2 =values.variant1.questions[num] %}
                 {% include 'demonstrator/question.html' %}
             {% endwith %}
         </div>
     {% endfor %}
-    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
-    <a id="cancel_btn" class="btn btn-primary" href={{ url_for('demonstrator.upload') }}>Отменить</a><br>
+    <form action="" method="post" class="form" role="form">
+        {{ values.form.csrf_token }}
+        <div class="row my-5">
+            <div class="col" >
+                {{ values.form.quest_time.label(class="form-control-label") }}
+                {{ values.form.quest_time(class="form-control mb-5", style="width:20%") }}
+            </div>
+            <div class="col text-center">
+                {{ values.form.quest_time.label(class="form-control-label", style="visibility: hidden !important;") }}
+                {{ values.form.submit(class="btn btn-success form-control mb-5") }}
+            </div>
+            <div class="col text-center">
+                {{ values.form.quest_time.label(class="form-control-label", style="visibility: hidden !important;") }}
+                <a id="cancel_btn" class="btn btn-danger form-control mb-5" >Отменить тестирование</a>
+            </div>
+            <div class="col text-center">
+                {{ values.form.quest_time.label(class="form-control-label", style="visibility: hidden !important;") }}
+            </div>
+
+        </div>
+    </form>
+    <!--{{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}-->
 
 {% endblock %}

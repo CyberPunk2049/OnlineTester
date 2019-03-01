@@ -2,5 +2,24 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
-    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
+    <div class="row  " style="height:60vh">
+        <div class="card border-0 p-4 m-auto" style="background-color: #f8f9fa;">
+            <form action="" method="post" class="form" role="form">
+                {{ values.form.csrf_token }}
+                <div class="form-group ">
+                    {{ values.form.subject.label(class="form-control-label") }}
+                    {{ values.form.subject(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.username.label(class="form-control-label") }}
+                    {{ values.form.username(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.password.label(class="form-control-label") }}
+                    {{ values.form.password(class="form-control") }}
+                </div>
+                {{ values.form.submit(class="btn btn-success") }}
+            </form>
+        </div>
+    </div>
 {% endblock %}

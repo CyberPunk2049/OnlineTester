@@ -3,15 +3,23 @@
 
 {% block main%}
     <div class="row">
-        <p>{{ values.special }}</p>
-        <p>{{ values.theme }}</p>
-        {% if values.num != 0 %}
-            <p>{{ values.num }}</p>
-        {% endif %}
+        <div class="p-5 m-auto text-center" style="font-size:1.5rem">
+            Тест:
+            &nbsp
+            {% if values.num != 0 %}
+                {{ values.num }}
+                &nbsp
+            {% endif %}
+            {{ values.theme }}
+            &nbsp
+            {{ values.special }}
+        </div>
     </div>
-    <div class="row">
-        Тест завершён
+    <div class="row justify-content-center">
+        <div class="card border-0 p-5 m-auto" style="">
+            {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
+        </div>
     </div>
-    {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
+
 
 {% endblock %}
