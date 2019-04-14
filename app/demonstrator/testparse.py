@@ -7,28 +7,43 @@ from app.demonstrator.models import Test, Question, Answer
 
 class TestsRtfdom(RTFDOM):
     # Наследуемый класс, расширяемый методами для обработки тестов
-    def get_text(self, curNode=None, attr=None):
+
+    def get_text(self, cur_node=None, text_array=None, image_dict=None):
         # Медот для получения всех текстовых полей теста списком
+        if text_array is None:
+            text_array = []
 
-        if attr == None:
-            attr = []
+        if image_dict is None:
+            image_dict = {}
 
-        if curNode is None:
-            curNode = self.rootNode
+        if cur_node is None:
+            cur_node = self.rootNode
 
-        if curNode.nodeType == 'text':
-            nodeValue = curNode.value
-            if len(nodeValue) > 0:
-                attr.append(nodeValue)
+        if cur_node.nodeType == 'img':
+            for text in reversed(text_array):
+                if re.match(r'Задание №\d{1,2}', text):
+                    image_dict[str((re.findall(r'Задание №(\d{1,2})', text)[0]))] = cur_node.value
+                    break
 
-        if curNode.children:
-            for child in curNode.children:
-                self.get_text(child, attr)
+        if cur_node.nodeType == 'text':
+            node_value = cur_node.value
+            if len(node_value) > 0:
+                if re.search(r'\d\)', node_value) and re.match(r'\d\)', node_value) is None:
+                    values = re.split(r'\d\)', node_value, maxsplit=1)
+                    print(values)
+                    text_array.append(values[0])
+                    text_array.append(cur_node.value[len(values[0]):])
+                else:
+                    text_array.append(node_value)
 
-        return attr
+        if cur_node.children:
+            for child in cur_node.children:
+                self.get_text(child, text_array, image_dict)
 
-    def test_dict(self):
-        # Метод для объединения списка текстовых полей в словарь
+        return [text_array, image_dict]
+
+    def test_dict_version_1(self):
+        # Метод для объединения списка текстовых полей в словарь(старая версия тестов)
         #
         # Пример вывода:
         #
@@ -50,7 +65,7 @@ class TestsRtfdom(RTFDOM):
         #                ]
         # }
 
-        test_text = self.get_text()
+        [test_text, test_images] = self.get_text()
         i, length = 0, len(test_text)
         test = {
             'variant': '',
@@ -91,10 +106,81 @@ class TestsRtfdom(RTFDOM):
 
         return test
 
-    def add_to_database(self, test_theme, test_special, test_num, test_datetime):
+    def test_dict_version_0(self):
+        # Метод для объединения списка текстовых полей в словарь(новая версия тестов)
+        #
+        # Пример вывода:
+        #
+        # {
+        #    'variant': '12',
+        #    'questions': [
+        #        {
+        #            'name': 'Задание №33   Регуляция пищеварения',
+        #            'text': 'Главными  регуляторными механизмами  пищеварении в толстой кишке являются: ',
+        #            'answers': ['гуморальные', 'нервные', 'местные'],
+        #            'answers_bool': ['False', 'False', 'True']
+        #        },
+        #        {
+        #            'name': 'Задание №32   Регуляция пищеварения',
+        #            'text': 'Выделение какого из перечисленных веществ подавляется низким значением рН в'
+        #                    ' полости желудка:',
+        #            'answers': ['ГИП', 'соматостатина', 'секретина', 'ХЦК ', 'гастрина'],
+        #            'answers_bool': ['False', 'False', 'False', 'False', 'True']}
+        #                ]
+        # }
+
+        [test_text, test_images] = self.get_text()
+        i, length = 0, len(test_text)
+        test = {
+            'variant': '',
+            'questions': [],
+        }
+
+        while i < length:
+            if re.match(r'Вариант: №\d{1,2}.', test_text[i]):
+                test['variant'] = re.sub(r'[^0-9]', '', test_text[i])
+                i += 1
+                continue
+            if re.match(r'Задание №\d{1,2}', test_text[i]):
+                question = {
+                    'number': re.findall(r'Задание №(\d{1,2})', test_text[i])[0],
+                    'name': test_text[i],
+                    'text': test_text[i+1],
+                    'answers': [],
+                    'answers_bool': []
+                }
+                answers = re.split(r'\d\)', test_text[i+2])
+                for answer in answers[1:]:
+                    question['answers'].append(answer)
+                test['questions'].append(question)
+                i = i + 3
+                continue
+            if re.match(r'Ответы:', test_text[i]):
+                answer_values = re.split(r'#', test_text[i+1])[1:]
+                for answer_value in answer_values:
+                    value = re.split(r' \(1 б.\)', answer_value)
+                    for l in range(0, len(test['questions'][int(value[0])-1]['answers'])):
+                        if str(l+1) in re.findall(r'\d', value[1]):
+                            test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(1))
+                        else:
+                            test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(0))
+                i = i + 3
+                continue
+            i += 1
+
+        return test
+
+    def version_selection(self, test_version):
+        # Определяет версию теста для загрузки вызывает нужный загрузчик словаря
+        if test_version == 0:
+            return self.test_dict_version_0()
+        elif test_version == 1:
+            return self.test_dict_version_1()
+
+    def add_to_database(self, test_theme, test_special, test_num, test_datetime, test_version):
         # Добавляет тест из словаря в базу данных
         # TODO: Переписать тест для одного коммита
-        test_dict = self.test_dict()
+        test_dict = self.version_selection(test_version)
 
         test_model = Test(
             theme_id=test_theme.id,
@@ -126,4 +212,3 @@ class TestsRtfdom(RTFDOM):
                 )
                 db.session.add(answer_model)
             db.session.commit()
-

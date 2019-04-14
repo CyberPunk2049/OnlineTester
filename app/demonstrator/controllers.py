@@ -1,3 +1,4 @@
+import os
 import datetime
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, session
 from app.wrappers import login_require
@@ -36,7 +37,6 @@ def index():
 @demonstrator.route('upload/', methods=['GET', 'POST'])
 @login_require
 def upload():
-
     if not request.referrer:
         return redirect(url_for('administrator.index'))
 
@@ -59,28 +59,27 @@ def upload():
             values['errors'].append(u'Не удаётся загрузить тесты, ошибка загрузки файлов')
             return render_template('demonstrator/upload.html', values=values)
 
-        if not allowed_file(variant1.filename, current_app.config['ALLOWED_EXTENSIONS']):
-            values['errors'].append(u'Загружаемые файлы должны иметь расширение .rtf')
-            return render_template('demonstrator/upload.html', values=values)
-
-        if not allowed_file(variant2.filename, current_app.config['ALLOWED_EXTENSIONS']):
-            values['errors'].append(u'Загружаемые файлы должны иметь расширение .rtf')
-            return render_template('demonstrator/upload.html', values=values)
+        for variant in [variant1, variant2]:
+            if not allowed_file(variant.filename, current_app.config['ALLOWED_EXTENSIONS']):
+                values['errors'].append(u'Загружаемые файлы должны иметь расширение .rtf')
+                return render_template('demonstrator/upload.html', values=values)
 
         test_theme = Theme.query.get(values['form'].theme.data)
         test_special = Theme.query.get(values['form'].special.data)
         test_num = values['form'].num.data
         test_datetime = datetime.datetime.now()
+        test_version = values['form'].version.data
+        print(test_version)
 
         for variant in [variant1, variant2]:
             try:
                 test_dom_tree = TestsRtfdom()
                 test_dom_tree.openString(variant.stream.read().decode().replace('\r', ''))
                 test_dom_tree.parse()
-                test_dom_tree.add_to_database(test_theme, test_special, test_num, test_datetime)
+                test_dom_tree.add_to_database(test_theme, test_special, test_num, test_datetime, test_version)
             except Exception as e:
                 print(e)
-                values['errors'].append(u"Не удаётся загрузить тесты, не соответствует формат")
+                values['errors'].append(u"Не удаётся загрузить тесты, не соответствует формат или версия")
                 print(values['errors'])
 
                 return render_template('demonstrator/upload.html', values=values)
@@ -106,7 +105,7 @@ def upload():
 @demonstrator.route('test_start/', methods=['GET', 'POST'])
 @login_require
 def test_start():
-
+    print(os.listdir(current_app.root_path+current_app.config['MEDIA_FOLDER']))
     if not request.referrer:
         return redirect(url_for('administrator.index'))
 
@@ -138,7 +137,7 @@ def test_start():
         }
         for variant in [variant1, variant2]:
             variant['variant'] = Test.query.get(variant['id']).variant
-            variant['quest_max'] = variant['quest_max'] = len(Test.query.get(variant['id']).questions)
+            variant['quest_max'] = len(Test.query.get(variant['id']).questions)
             for question in Question.query.filter_by(test_id=variant['id']).order_by('num'):
                 answers = Answer.query.filter_by(question_id=question.id).order_by('num')
                 variant['questions'].append({

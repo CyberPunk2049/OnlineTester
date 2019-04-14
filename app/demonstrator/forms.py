@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import SubmitField, IntegerField, SelectField
+from wtforms import SubmitField, IntegerField, SelectField, RadioField
 
 
 class UploadFilesForm(FlaskForm):
@@ -9,6 +9,7 @@ class UploadFilesForm(FlaskForm):
     special = SelectField('Специальность', coerce=int)
     variant1 = FileField('Вариант I', validators=[FileRequired()])
     variant2 = FileField('Вариант II', validators=[FileRequired()])
+    version = RadioField(choices=[(0, 'Новая версия тестов'), (1, 'Старая версия тестов')], coerce=int, default=0)
     submit = SubmitField('Загрузить')
 
 
