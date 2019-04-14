@@ -105,7 +105,7 @@ def upload():
 @demonstrator.route('test_start/', methods=['GET', 'POST'])
 @login_require
 def test_start():
-    print(os.listdir(current_app.root_path+current_app.config['MEDIA_FOLDER']))
+    #print(os.listdir(current_app.root_path+current_app.config['MEDIA_FOLDER']))
     if not request.referrer:
         return redirect(url_for('administrator.index'))
 
