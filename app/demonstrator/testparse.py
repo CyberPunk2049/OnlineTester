@@ -152,8 +152,8 @@ class TestsRtfdom(RTFDOM):
                     'answers_bool': []
                 }
                 if str(question['number']) in test_images.keys():
-                    filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S(') \
-                               + str(test['variant']) + ')(' + str(question['number']) + ').png'
+                    filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S') \
+                               + str(test['variant']) + str(question['number']) + '.png'
                     question['img_path'] = filename
 
                     with open(os.path.join(current_app.root_path, current_app.config['MEDIA_FOLDER'],
