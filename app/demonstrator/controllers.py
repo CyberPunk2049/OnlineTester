@@ -77,9 +77,10 @@ def upload():
                 test_dom_tree.parse()
                 test_dom_tree.add_to_database(test_theme, test_special, test_num, test_datetime, test_version)
             except Exception as e:
-                print(e)
-                values['errors'].append(u"Не удаётся загрузить тесты, не соответствует формат или версия")
-                print(values['errors'])
+                if current_app.config['DEBUG']:
+                    values['errors'].append(e)
+                else:
+                    values['errors'].append(u"Не удаётся загрузить тесты, не соответствует формат или версия")
 
                 return render_template('demonstrator/upload.html', values=values)
 
