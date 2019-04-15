@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, send_from_directory, current_app
 from flask_bootstrap import Bootstrap
 
 def create_app(config):
@@ -30,5 +30,9 @@ def create_app(config):
     @app.errorhandler(404)
     def page_not_found(e):
         return render_template('404.html')
+
+    @app.route('/media/<filename>', endpoint='media')
+    def send_media_file(filename):
+        return send_from_directory(current_app.config['MEDIA_FOLDER'], filename)
 
     return app

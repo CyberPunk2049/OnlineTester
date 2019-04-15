@@ -6,7 +6,16 @@
     </div>
     <div class="card-body" style="background-color:#87CEFA">
         <div class="card-title">
-            {{ question1.text }}
+            <div style="border-bottom: 1px solid dodgerblue;">
+                <div>
+                    {{ question1.text }}
+                </div>
+                {% if question1.img_path %}
+                    <div class="text-center">
+                        <img class="p-1" src="{{ url_for('media', filename=question1.img_path) }}">
+                    </div>
+                {% endif %}
+            </div>
         </div>
         <div class="card-text">
             <ol>
@@ -23,7 +32,16 @@
     </div>
     <div class="card-body" style="background-color:#7FFFD4">
         <div class="card-title">
-            {{ question2.text }}
+            <div style="border-bottom: 1px solid lightgreen;">
+                <div>
+                    {{ question2.text }}
+                </div>
+                {% if question2.img_path %}
+                    <div class="text-center">
+                        <img class="p-1" src="{{ url_for('media', filename=question2.img_path) }}">
+                    </div>
+                {% endif %}
+            </div>
         </div>
         <div class="card-text">
             <ol>

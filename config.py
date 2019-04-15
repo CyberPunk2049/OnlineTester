@@ -13,7 +13,7 @@ class Config(object):
 
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:qwerty@localhost/online_tester-dev'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    MEDIA_FOLDER = '/media'
+    MEDIA_FOLDER = 'media'
 
 
 class ProductionConfig(Config):

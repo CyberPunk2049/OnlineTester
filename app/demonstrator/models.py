@@ -31,6 +31,7 @@ class Question(db.Model):
     num = db.Column(db.Integer)
     name = db.Column(db.String())
     text = db.Column(db.String())
+    img_path = db.Column(db.String())
 
 
 class Answer(db.Model):

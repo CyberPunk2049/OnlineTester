@@ -69,7 +69,6 @@ def upload():
         test_num = values['form'].num.data
         test_datetime = datetime.datetime.now()
         test_version = values['form'].version.data
-        print(test_version)
 
         for variant in [variant1, variant2]:
             try:
@@ -105,7 +104,6 @@ def upload():
 @demonstrator.route('test_start/', methods=['GET', 'POST'])
 @login_require
 def test_start():
-    #print(os.listdir(current_app.root_path+current_app.config['MEDIA_FOLDER']))
     if not request.referrer:
         return redirect(url_for('administrator.index'))
 
@@ -143,6 +141,7 @@ def test_start():
                 variant['questions'].append({
                     'name': question.name,
                     'text': question.text,
+                    'img_path':  question.img_path,
                     'answers': [answer.text for answer in answers],
                     'answers_bool': [answer.value for answer in answers]
                 })
@@ -199,6 +198,7 @@ def test_process():
             question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
             variant['question']['name'] = question.name
             variant['question']['text'] = question.text
+            variant['question']['img_path'] = question.img_path
             answers = Answer.query.filter_by(question_id=question.id).order_by('num')
             variant['question']['answers'] = [answer.text for answer in answers]
 
@@ -272,6 +272,7 @@ def new_question():
         question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
         variant['question']['name'] = question.name
         variant['question']['text'] = question.text
+        variant['question']['img_path'] = question.img_path
         answers = Answer.query.filter_by(question_id=question.id).order_by('num')
         variant['question']['answers'] = [answer.text for answer in answers]
 

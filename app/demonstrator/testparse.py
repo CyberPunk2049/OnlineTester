@@ -1,8 +1,10 @@
-from flask import session
+from flask import session, current_app
 from app.database import db
 from pyrtfdom.dom import RTFDOM
 import re
 from app.demonstrator.models import Test, Question, Answer
+import datetime
+import os
 
 
 class TestsRtfdom(RTFDOM):
@@ -30,7 +32,6 @@ class TestsRtfdom(RTFDOM):
             if len(node_value) > 0:
                 if re.search(r'\d\)', node_value) and re.match(r'\d\)', node_value) is None:
                     values = re.split(r'\d\)', node_value, maxsplit=1)
-                    print(values)
                     text_array.append(values[0])
                     text_array.append(cur_node.value[len(values[0]):])
                 else:
@@ -81,22 +82,22 @@ class TestsRtfdom(RTFDOM):
                 question = {
                     'number': re.findall(r'Задание №(\d{1,2})', test_text[i])[0],
                     'name': test_text[i],
-                    'text': test_text[i+1],
+                    'text': test_text[i + 1],
                     'answers': [],
                     'answers_bool': []
                 }
-                answers = re.split(r'\d\)', test_text[i+2])
+                answers = re.split(r'\d\)', test_text[i + 2])
                 for answer in answers[1:]:
                     question['answers'].append(answer)
                 test['questions'].append(question)
                 i = i + 3
                 continue
             if re.match(r'Ответы:', test_text[i]):
-                answer_values = re.split(r'#', test_text[i+2])[1:]
+                answer_values = re.split(r'#', test_text[i + 2])[1:]
                 for answer_value in answer_values:
                     value = re.split(r' \(1 б.\)', answer_value)
-                    for l in range(0, len(test['questions'][int(value[0])-1]['answers'])):
-                        if str(l+1) in re.findall(r'\d', value[1]):
+                    for l in range(0, len(test['questions'][int(value[0]) - 1]['answers'])):
+                        if str(l + 1) in re.findall(r'\d', value[1]):
                             test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(1))
                         else:
                             test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(0))
@@ -145,22 +146,31 @@ class TestsRtfdom(RTFDOM):
                 question = {
                     'number': re.findall(r'Задание №(\d{1,2})', test_text[i])[0],
                     'name': test_text[i],
-                    'text': test_text[i+1],
+                    'text': test_text[i + 1],
+                    'img_path': '',
                     'answers': [],
                     'answers_bool': []
                 }
-                answers = re.split(r'\d\)', test_text[i+2])
+                if str(question['number']) in test_images.keys():
+                    filename = datetime.datetime.now().strftime('%Y%m%d%H%M%S(') \
+                               + str(test['variant']) + ')(' + str(question['number']) + ').png'
+                    question['img_path'] = filename
+
+                    with open(os.path.join(current_app.root_path, current_app.config['MEDIA_FOLDER'],
+                                           question['img_path']), 'bw') as img:
+                        img.write(test_images[str(question['number'])])
+                answers = re.split(r'\d\)', test_text[i + 2])
                 for answer in answers[1:]:
                     question['answers'].append(answer)
                 test['questions'].append(question)
                 i = i + 3
                 continue
             if re.match(r'Ответы:', test_text[i]):
-                answer_values = re.split(r'#', test_text[i+1])[1:]
+                answer_values = re.split(r'#', test_text[i + 1])[1:]
                 for answer_value in answer_values:
                     value = re.split(r' \(1 б.\)', answer_value)
-                    for l in range(0, len(test['questions'][int(value[0])-1]['answers'])):
-                        if str(l+1) in re.findall(r'\d', value[1]):
+                    for l in range(0, len(test['questions'][int(value[0]) - 1]['answers'])):
+                        if str(l + 1) in re.findall(r'\d', value[1]):
                             test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(1))
                         else:
                             test['questions'][int(value[0]) - 1]['answers_bool'].append(bool(0))
@@ -198,7 +208,8 @@ class TestsRtfdom(RTFDOM):
                 test_id=test_id,
                 num=int(question['number']),
                 name=question['name'],
-                text=question['text']
+                text=question['text'],
+                img_path=question['img_path']
             )
             db.session.add(question_model)
             db.session.commit()
@@ -206,7 +217,7 @@ class TestsRtfdom(RTFDOM):
             for i, answer in enumerate(question['answers']):
                 answer_model = Answer(
                     question_id=question_id,
-                    num=i+1,
+                    num=i + 1,
                     text=answer,
                     value=question['answers_bool'][i]
                 )
