@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block main%}
+    <div class="row  " style="height:60vh">
+        <div class="card border-0 p-4 m-auto" style="background-color: #f8f9fa;">
+            <form action="" method="post" class="form" role="form">
+                {{ values.form.csrf_token }}
+                <div class="form-group required">
+                    {{ values.form.name.label(class="form-control-label") }}
+                    {{ values.form.name(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.surname.label(class="form-control-label") }}
+                    {{ values.form.surname(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.patronymic.label(class="form-control-label") }}
+                    {{ values.form.patronymic(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.group.label(class="form-control-label") }}
+                    {{ values.form.group(class="form-control") }}
+                </div>
+                <div class="form-group  required">
+                    {{ values.form.email.label(class="form-control-label") }}
+                    {{ values.form.email(class="form-control") }}
+                </div>
+                {{ values.form.submit(class="btn btn-success") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
