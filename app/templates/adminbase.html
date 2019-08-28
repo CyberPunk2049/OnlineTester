@@ -1,0 +1,68 @@
+{% extends "bootstrap/base.html" %}
+
+    {% block title %}
+        {{ values.title }}
+    {% endblock %}
+
+
+    {% block navbar %}
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid justify-content-center">
+                <span class="navbar-brand" style="font-size:2rem; color:rgba(0,0,0,.5);">
+                    <strong>
+                        {% if values.login_required %}
+                            {{ session.subject_name }}
+                        {% endif %}
+                    </strong>
+                </span >
+                <span  class="navbar-text mx-auto" style="color:black">
+                    <h3 id="navbar-text" >
+                        {{ values.page_info}}
+                    </h3>
+                </span>
+                <span class="navbar-text" style="font-size:2rem !important; visibility: hidden !important;">
+                    <strong>
+                        {% if values.login_required %}
+                            {{ session.subject_name }}
+                        {% endif %}
+                    </strong>
+                </span>
+            </div>
+        </nav>
+    {% endblock %}
+
+
+    {% block content %}
+        <div class="container justify-content-center">
+            {% if values.errors %}
+                {% for error in values.errors %}
+                    <div class="row">
+                        <div class="alert alert-danger w-100 text-center" role="alert">
+                            {{ error }}
+                        </div>
+                    </div>
+                {% endfor%}
+            {% endif %}
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div>
+                        <div class="alert alert-success" role="alert">
+                            {% for message in messages %}
+                                {{ message }}
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block main %}
+            {% endblock %}
+
+        </div>
+    {% endblock %}
+
+    {% block scripts%}
+        {{ super() }}
+        <script src="{{ url_for('static', filename='js/admintester.js') }}"></script>
+
+    {% endblock %}

@@ -1,0 +1,20 @@
+{% extends "basestudent.html" %}
+
+{% block main%}
+    <div class="row justify-content-center text-center" style="height:60vh">
+        <h2 class="m-auto">
+            {{ values.page_info }}
+            <br>
+            Имя: {{ values.student.name}}
+            <br>
+            Фамилия: {{ values.student.surname}}
+            <br>
+            Отчество: {{ values.student.patronymic}}
+            <br>
+            Группа: {{ values.student.group}}
+            <br>
+            Вариант: {{ values.student.variant}}
+        </h2>
+        <button id="cancel_btn" class="btn btn-danger form-control mb-5" >Отменить регистрацию</button>
+    </div>
+{% endblock %}
