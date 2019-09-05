@@ -2,3 +2,4 @@
 .idea/*
 *.pyc
 /app/media/*.png
+tests/files/
