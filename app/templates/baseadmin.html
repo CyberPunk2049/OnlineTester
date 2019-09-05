@@ -8,7 +8,7 @@
     {% block navbar %}
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid justify-content-center">
-                <span class="navbar-brand" style="font-size:2rem; color:rgba(0,0,0,.5);">
+                <span class="navbar-brand" style="font-size:1rem; color:rgba(0,0,0,.5);">
                     <strong>
                         {% if values.login_required %}
                             {{ session.subject_name }}
@@ -16,11 +16,11 @@
                     </strong>
                 </span >
                 <span  class="navbar-text mx-auto" style="color:black">
-                    <h3 id="navbar-text" >
+                    <h4 id="navbar-text" >
                         {{ values.page_info}}
-                    </h3>
+                    </h4>
                 </span>
-                <span class="navbar-text" style="font-size:2rem !important; visibility: hidden !important;">
+                <span class="navbar-text" style="font-size:1rem !important; visibility: hidden !important;">
                     <strong>
                         {% if values.login_required %}
                             {{ session.subject_name }}

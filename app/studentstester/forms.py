@@ -7,6 +7,7 @@ class PersonalDataForm(FlaskForm):
     name = StringField('Имя', [DataRequired(), Length(max=50)])
     surname = StringField('Фамилия', [DataRequired(), Length(max=50)])
     patronymic = StringField('Отчество', [DataRequired(), Length(max=50)])
+    student_id = StringField('№ студ.билета', [DataRequired(), Length(max=20)])
     group = StringField('Группа', [DataRequired(), Length(max=20)])
     email = StringField('E-mail', [DataRequired(), Email(message='Неверно введён E-mail'), Length(max=100)])
     submit = SubmitField('Подтвердить')

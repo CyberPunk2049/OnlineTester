@@ -15,9 +15,13 @@ class UploadFilesForm(FlaskForm):
 
 class TestStartForm(FlaskForm):
     quest_time = IntegerField('Время вопроса (сек)')
+    submit = SubmitField('Начать регистрацию на тест')
+
+
+class TestRegistrationForm(FlaskForm):
     submit = SubmitField('Начать тестирование')
 
 
 class TestFinishForm(FlaskForm):
-    submit = SubmitField('Сохранить результаты теста')
+    submit = SubmitField('Закончить тестирование')
 

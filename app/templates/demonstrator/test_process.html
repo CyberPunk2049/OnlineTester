@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "baseadmin.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
@@ -24,29 +24,17 @@
                 Вариант II ({{ values.variant2.variant }})
             </div>
     </div>
-        {% if session.quest_num == 0 %}
-            <div id="question" class="card-deck" quest-num={{ session.quest_num }} quest-max={{ session.quest_max }}>
+    <div id="question" class="card-deck" quest-num={{ session.quest_num }} quest-max={{ session.quest_max }}>
+        {% with question1 = values.variant1.question, question2 = values.variant2.question %}
+            {% include 'demonstrator/question.html' %}
+        {% endwith %}
+    </div>
+    <div class="my-3 progress" style="height: 30px;">
+        <div class=" progress-bar bg-warning" role="progressbar" style="width: 0%; transition:none;" aria-valuenow=0 aria-valuemin=0 aria-valuemax={{ values.quest_time*100 }}></div>
+    </div>
+    <div class="row justify-content-center">
+        <div id="control_btn" class="btn btn-success mx-5" >Приостановить тестирование</div>
 
-            </div>
-            <div class="my-3 progress" style="height: 30px;">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%; transition:none;" aria-valuenow=0 aria-valuemin=0 aria-valuemax={{ values.quest_time*100 }}></div>
-            </div>
-            <div class="row justify-content-center">
-                <div id="control_btn" class="btn btn-success" >Запустить тестирование</div>
-        {% else %}
-
-            <div id="question" class="card-deck" quest-num={{ session.quest_num }} quest-max={{ session.quest_max }}>
-                {% with question1 = values.variant1.question, question2 = values.variant2.question %}
-                    {% include 'demonstrator/question.html' %}
-                {% endwith %}
-            </div>
-
-            <div class="my-3 progress" style="height: 30px;">
-                <div class=" progress-bar bg-warning" role="progressbar" style="width: 0%; transition:none;" aria-valuenow=0 aria-valuemin=0 aria-valuemax={{ values.quest_time*100 }}></div>
-            </div>
-            <div class="row justify-content-center">
-                <div id="control_btn" class="btn btn-success mx-5" >Продолжить тестирование</div>
-        {% endif %}
-                <button id="cancel_btn" class="btn btn-danger mx-5" >Отменить тестирование</button>
-        </div>
+        <button id="cancel_btn" class="btn btn-danger mx-5" >Отменить тестирование</button>
+    </div>
 {% endblock %}

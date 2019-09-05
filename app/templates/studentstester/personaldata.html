@@ -1,32 +1,40 @@
-{% extends "base.html" %}
+{% extends "basestudent.html" %}
 
 {% block main%}
-    <div class="row  " style="height:60vh">
-        <div class="card border-0 p-4 m-auto" style="background-color: #f8f9fa;">
-            <form action="" method="post" class="form" role="form">
-                {{ values.form.csrf_token }}
-                <div class="form-group required">
-                    {{ values.form.name.label(class="form-control-label") }}
-                    {{ values.form.name(class="form-control") }}
-                </div>
-                <div class="form-group  required">
-                    {{ values.form.surname.label(class="form-control-label") }}
-                    {{ values.form.surname(class="form-control") }}
-                </div>
-                <div class="form-group  required">
-                    {{ values.form.patronymic.label(class="form-control-label") }}
-                    {{ values.form.patronymic(class="form-control") }}
-                </div>
-                <div class="form-group  required">
-                    {{ values.form.group.label(class="form-control-label") }}
-                    {{ values.form.group(class="form-control") }}
-                </div>
-                <div class="form-group  required">
-                    {{ values.form.email.label(class="form-control-label") }}
-                    {{ values.form.email(class="form-control") }}
-                </div>
-                {{ values.form.submit(class="btn btn-success") }}
-            </form>
-        </div>
+    <div class="row justify-content-center h-25">
+        <p class="m-auto">
+            {{ values.page_info }}
+        </p>
     </div>
+    <div class="row justify-content-center ">
+        <form action="" method="post" class="form col-xl-4 col-lg-4" role="form">
+            <div class="form-row justify-content-center">
+                {{ values.form.csrf_token }}
+                <div class="col-auto form-group required">
+                    {{ values.form.name(class="form-control form-control-sm", placeholder=values.form.name.label.text) }}
+                </div>
+                <div class="col-auto form-group  required">
+                    {{ values.form.surname(class="form-control form-control-sm", placeholder=values.form.surname.label.text) }}
+                </div>
+                <div class="col-auto form-group  required">
+                    {{ values.form.patronymic(class="form-control form-control-sm", placeholder=values.form.patronymic.label.text) }}
+                </div>
+                <div class="col-auto form-group required">
+                    {{ values.form.student_id(class="form-control form-control-sm", placeholder=values.form.student_id.label.text) }}
+                </div>
+                <div class="col-auto form-group  required">
+                    {{ values.form.group(class="form-control form-control-sm", placeholder=values.form.group.label.text) }}
+                </div>
+                <div class="col-auto form-group  required">
+                    {{ values.form.email(class="form-control form-control-sm", placeholder=values.form.email.label.text) }}
+                </div>
+            </div>
+            <div class="form-row justify-content-center">
+                <div class="col-auto">
+                    {{ values.form.submit(class="btn btn-success") }}
+                </div>
+            </div>
+        </form>
+    </div>
+
 {% endblock %}

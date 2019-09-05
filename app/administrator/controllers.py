@@ -17,7 +17,7 @@ def index():
 
     values = {
         'title': 'Авторизация',
-        'page_info':'Выберите действие',
+        'page_info': 'Выберите действие',
         'login_required': True,
         'errors': [],
         'form': None

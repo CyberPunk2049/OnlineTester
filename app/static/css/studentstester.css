@@ -1,0 +1,49 @@
+body {
+    height: 85vh;
+    background-color: #f8f9fa;
+}
+
+.variant1 {
+    background-color: #00BFFF;
+}
+
+.variant2 {
+    background-color: #66CDAA;
+}
+/*Кнопки выбора варианта*/
+.button_variant1 {
+    width: 200px;
+    height: 80px;
+    background-color: #00BFFF;
+    cursor: pointer
+}
+
+.button_variant1:hover {
+    background-color: #0099CC;
+}
+
+.button_variant2 {
+    width: 200px;
+    height: 80px;
+    background-color: #66CDAA;
+    cursor: pointer
+}
+
+.button_variant2:hover {
+    background-color: #44AA88;
+}
+
+/*Кнопки ответа на вопрос*/
+.button_answ {
+    width: 55px;
+    height: 55px;
+    cursor: pointer;
+}
+
+.button_answ_off {
+    background-color: #00BFFF;
+}
+
+.button_answ_on {
+    background-color: #0099CC;
+}

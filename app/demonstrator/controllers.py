@@ -2,9 +2,10 @@ import os
 import datetime
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, session
 from app.wrappers import login_require
-from app.demonstrator.forms import UploadFilesForm, TestStartForm, TestFinishForm
+from app.demonstrator.forms import UploadFilesForm, TestStartForm, TestFinishForm, TestRegistrationForm
 from app.administrator.models import Sessions
 from app.demonstrator.models import Theme, Special, Test, Question, Answer
+from app.studentstester.models import Student
 from app.demonstrator.testparse import TestsRtfdom
 from app.database import db
 
@@ -29,8 +30,10 @@ def index():
     if test_status == 2:
         return redirect(url_for('demonstrator.test_start'))
     if test_status == 3:
-        return redirect(url_for('demonstrator.test_process'))
+        return redirect(url_for('demonstrator.test_registration'))
     if test_status == 4:
+        return redirect(url_for('demonstrator.test_process'))
+    if test_status == 5:
         return redirect(url_for('demonstrator.test_finish'))
 
 
@@ -147,10 +150,10 @@ def test_start():
                     'answers_bool': [answer.value for answer in answers]
                 })
 
-        sessionparams.quest_num = 0
+        sessionparams.quest_num = 1
         sessionparams.quest_max = max(variant1['quest_max'], variant2['quest_max'])
         db.session.commit()
-        session['quest_num'] = 0
+        session['quest_num'] = 1
         session['quest_max'] = sessionparams.quest_max
 
         values['variant1'], values['variant2'] = variant1, variant2
@@ -165,6 +168,47 @@ def test_start():
         values['num'] = test_property.num
 
         return render_template('demonstrator/test_start.html', values=values)
+
+
+# Режим во время которого происходит регистрация студентов на тестирование
+@demonstrator.route('test_registration/', methods=['GET', 'POST'])
+@login_require
+def test_registration():
+
+    if not request.referrer:
+        return redirect(url_for('administrator.index'))
+
+    sessionparams = Sessions.query.get(1)
+
+    values = {
+        'title': 'Демонстратор: Регистрация на тестирование',
+        'page_info': 'Регистрация на тестирование',
+        'login_required': True,
+        'errors': [],
+        'form': TestRegistrationForm()
+    }
+
+    if values['form'].validate_on_submit():
+        sessionparams.test_status = 4
+        # Удалим студентов не прошедших до конца все шаги регистрации (у которых не заполнены все необходимые поля)
+        [test_id_var_1, test_id_var_2] = get_variants()
+        students_unready = Student.query.filter(Student.test_id.in_([test_id_var_1, test_id_var_2]),
+                                          Student.variant == None).delete(synchronize_session=False)
+        print(students_unready)
+
+        db.session.commit()
+        session['test_status'] = 4
+        return redirect(url_for('demonstrator.index'))
+
+    test_property = Test.query.get(db.session.query(db.func.max(Test.id)).scalar())
+    values['theme'] = test_property.theme.name
+    values['special'] = test_property.special.name
+    values['num'] = test_property.num
+
+    for key in values['form'].errors:
+        values['errors'].append(values['form'].errors[key])
+
+    return render_template('demonstrator/test_registration.html', values=values)
 
 
 @demonstrator.route('test_process/', methods=['GET', 'POST'])
@@ -192,16 +236,15 @@ def test_process():
     }
     sessionparams = Sessions.query.get(1)
     for variant in [variant1, variant2]:
+        question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
+
         variant['variant'] = Test.query.get(variant['id']).variant
         variant['quest_max'] = len(Test.query.get(variant['id']).questions)
-
-        if sessionparams.quest_num != 0:
-            question = Question.query.filter_by(test_id=variant['id'], num=sessionparams.quest_num).first()
-            variant['question']['name'] = question.name
-            variant['question']['text'] = question.text
-            variant['question']['img_path'] = question.img_path
-            answers = Answer.query.filter_by(question_id=question.id).order_by('num')
-            variant['question']['answers'] = [answer.text for answer in answers]
+        variant['question']['name'] = question.name
+        variant['question']['text'] = question.text
+        variant['question']['img_path'] = question.img_path
+        answers = Answer.query.filter_by(question_id=question.id).order_by('num')
+        variant['question']['answers'] = [answer.text for answer in answers]
 
     values['variant1'], values['variant2'] = variant1, variant2
     values['quest_time'] = sessionparams.quest_time
@@ -222,8 +265,8 @@ def test_finish():
 
     sessionparams = Sessions.query.get(1)
 
-    if sessionparams.test_status != 4 and sessionparams.quest_max == sessionparams.quest_num:
-        sessionparams.test_status = 4
+    if sessionparams.test_status != 5 and sessionparams.quest_max == sessionparams.quest_num:
+        sessionparams.test_status = 5
         db.session.commit()
         session['test_status'] = sessionparams.test_status
 
@@ -278,3 +321,26 @@ def new_question():
         variant['question']['answers'] = [answer.text for answer in answers]
 
     return render_template('demonstrator/question.html', question1=variant1['question'], question2=variant2['question'])
+
+
+@demonstrator.route('_students_count/', methods=['GET', 'POST'])
+@login_require
+def students_count():
+    """
+    Функция возвращает число зарегистрированных на тестирование студентов
+    :return html
+    """
+    [test_id_var_1, test_id_var_2] = get_variants()
+    students_count = Student.query.filter(Student.test_id.in_([test_id_var_1, test_id_var_2]),
+                                          Student.variant != None).count()
+    return 'Число зарегистрированных участников: ' + str(students_count) + ' человек'
+
+
+def get_variants():
+    """
+    Функция возвращает id тестов для двух вариантов текущей сессии
+    :return: list
+    """
+    test_id_var_2 = db.session.query(db.func.max(Test.id)).scalar()
+    test_id_var_1 = test_id_var_2 - 1
+    return [test_id_var_1, test_id_var_2]

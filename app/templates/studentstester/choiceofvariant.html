@@ -1,33 +1,24 @@
-{% extends "base.html" %}
+{% extends "basestudent.html" %}
 
-{% block main%}
-    <div class="row justify-content-center text-center" style="height:60vh">
-            <form action="" method="post" class="form" enctype="multipart/form-data" role="form">
-                {{ values.form.csrf_token}}
-                <div class="btn-group" data-toggle="buttons">
-                    {% for subfield in values.form.variant %}
-                        {{ subfield.label(class="btn btn-primary") }}
-                        {{ subfield(type='radio') }}
-
-                    {% endfor %}
-                </div>
-                <div class="row text-center py-2">
-                    <div class="col">
-                        {{ values.form.submit(class="btn btn-success") }}
-                    </div>
-                </div>
-            </form>
+{% block main %}
+    <div class="row justify-content-center h-25">
+        <p class="m-auto">
+            {{ values.page_info }}
+        </p>
     </div>
-<div class="btn-group" data-toggle="buttons">
-      <label class="btn btn-primary">
-        <input type="radio" name="options" id="option1"> Option 1
-      </label>
-      <label class="btn btn-primary">
-        <input type="radio" name="options" id="option2"> Option 2
-      </label>
-      <label class="btn btn-primary">
-        <input type="radio" name="options" id="option3"> Option 3
-      </label>
-</div>
+    <div class="row justify-content-center">
+        <div class="button_variant1 card m-1" value="1">
+            <p class="m-auto">
+                Вариант 1
+            </p>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="button_variant2 card m-1" value="2">
+            <p class="m-auto">
+                Вариант 2
+            </p>
+        </div>
+    </div>
 {% endblock %}
 

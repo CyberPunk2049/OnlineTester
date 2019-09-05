@@ -1,9 +1,9 @@
-{% extends "adminbase.html" %}
+{% extends "baseadmin.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
-    <div class="row">
-        <div class="p-5 m-auto text-center" style="font-size:1.5rem">
+    <div class="row justify-content-center">
+        <p class="p-5 m-auto text-center" style="font-size:1.5rem">
             Тест:
             &nbsp
             {% if values.num != 0 %}
@@ -13,13 +13,24 @@
             {{ values.theme }}
             &nbsp
             {{ values.special }}
-        </div>
+        </p>
     </div>
     <div class="row justify-content-center">
-        <div class="card border-0 p-5 m-auto" style="">
-            {{ wtf.quick_form(values.form, button_map={'submit':'success'}) }}
-            <button id="cancel_btn" class="btn btn-danger mx-5" >Отменить тестирование</button>
-        </div>
+        <p id="studentscount" class="p-5 m-auto text-center" style="font-size: 1.5rem">
+        </p>
+    </div>
+    <div class="row justify-content-center">
+        <form action="" method="post" class="form" role="form">
+        {{ values.form.csrf_token }}
+            <div class="row my-5">
+                <div class="col text-center">
+                    {{ values.form.submit(class="btn btn-success form-control mb-5") }}
+                </div>
+                <div class="col text-center">
+                    <a id="cancel_btn" class="btn btn-danger form-control mb-5" >Отменить тестирование</a>
+                </div>
+            </div>
+        </form>
     </div>
 
 

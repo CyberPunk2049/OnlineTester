@@ -10,12 +10,12 @@ def create_app(config):
     from app.database import db
 
     from app.administrator.controllers import administrator
-    from app.studentstester.controllers import tester
+    from app.studentstester.controllers import studentstester
     from app.demonstrator.controllers import demonstrator
     from app.estimator.controllers import estimator
 
     app.register_blueprint(administrator)
-    app.register_blueprint(tester)
+    app.register_blueprint(studentstester)
     app.register_blueprint(demonstrator)
     app.register_blueprint(estimator)
 

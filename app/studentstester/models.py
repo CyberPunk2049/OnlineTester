@@ -8,6 +8,7 @@ class Student(db.Model):
     name = db.Column(db.String(50))
     surname = db.Column(db.String(50))
     patronymic = db.Column(db.String(50))
+    student_id = db.Column(db.String(50))
     group = db.Column(db.String(20))
     email = db.Column(db.String(100))
     variant = db.Column(db.Integer)
@@ -15,6 +16,10 @@ class Student(db.Model):
 
 
 class StudentAnswer(db.Model):
+    __table_args__ = (
+        db.UniqueConstraint('student_id', 'answer_id'),
+    )
+
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
     answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
