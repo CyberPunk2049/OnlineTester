@@ -6,29 +6,31 @@
 
 
     {% block navbar %}
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid justify-content-center">
-                <span class="navbar-brand" style="font-size:1rem; color:rgba(0,0,0,.5);">
-                    <strong>
-                        {% if values.login_required %}
-                            {{ session.subject_name }}
-                        {% endif %}
-                    </strong>
-                </span >
-                <span  class="navbar-text mx-auto" style="color:black">
-                    <h4 id="navbar-text" >
-                        {{ values.page_info}}
-                    </h4>
-                </span>
-                <span class="navbar-text" style="font-size:1rem !important; visibility: hidden !important;">
-                    <strong>
-                        {% if values.login_required %}
-                            {{ session.subject_name }}
-                        {% endif %}
-                    </strong>
-                </span>
-            </div>
-        </nav>
+        {% if values.title != 'Демонстратор: Идёт теститорвание' %}
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid justify-content-center">
+                    <span class="navbar-brand" style="font-size:1rem; color:rgba(0,0,0,.5);">
+                        <strong>
+                            {% if values.login_required %}
+                                {{ session.subject_name }}
+                            {% endif %}
+                        </strong>
+                    </span >
+                    <span  class="navbar-text mx-auto" style="color:black">
+                        <h4 id="navbar-text" >
+                            {{ values.page_info}}
+                        </h4>
+                    </span>
+                    <span class="navbar-text" style="font-size:1rem !important; visibility: hidden !important;">
+                        <strong>
+                            {% if values.login_required %}
+                                {{ session.subject_name }}
+                            {% endif %}
+                        </strong>
+                    </span>
+                </div>
+            </nav>
+        {% endif %}
     {% endblock %}
 
 
@@ -64,5 +66,6 @@
     {% block scripts%}
         {{ super() }}
         <script src="{{ url_for('static', filename='js/admintester.js') }}"></script>
+        <link href="{{ url_for('static', filename='css/admintester.css') }}" rel="stylesheet"/>
 
     {% endblock %}

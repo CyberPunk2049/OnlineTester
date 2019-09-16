@@ -1,0 +1,77 @@
+{% extends "baseadmin.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block main %}
+    <div class="row">
+        <div class="p-1 m-auto text-center" style="font-size:1.5rem">
+            Тест:
+            &nbsp
+            {% if values.num != 0 %}
+                {{ values.num }}
+                &nbsp
+            {% endif %}
+            {{ values.theme }}
+            &nbsp
+            {{ values.special }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="p-1 m-auto text-center" style="font-size:1.5rem">
+            Вариант {{ values.variant }}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-2">
+        <table id="results" test_id="{{ values.test_id }}" class="table table-bordered table-sm text-center">
+            {% if values.questions %}
+                <thead>
+                    <tr>
+                        <th scope="col">Вопрос</th>
+                        <th scope="col">Ответы</th>
+                        <th class="ans_cell" scope="col">Правильные</th>
+                        <th class="ans_cell" scope="col">Студента</th>
+                    </tr>
+                </thead>
+            {% endif %}
+            <tbody>
+                {% for question in values.questions %}
+                    <tr>
+                        <td colspan="4" style="background-color: darkgrey">
+                            {{ question.name }}
+                        </td>
+                    </tr>
+                    {% for answer in question.answers %}
+                        <tr>
+                            {% if loop.index == 1 %}
+                                <td class="question_cell" rowspan="{{ question.answers|length }}">
+                                    {{ question.text }}
+                                    {% if question.img_path %}
+                                        <div class="text-center">
+                                            <img class="p-1 border quest_image" src="{{ url_for('media', filename=question.img_path) }}">
+                                        </div>
+                                    {% endif %}
+                                </td>
+                            {% endif %}
+                            <td {% if answer.true == answer.student %}class="success"{% endif %}>
+                                {{ answer.text }}
+                            </td>
+                            <th class="ans_cell {% if answer.true == answer.student %}success{% endif %}">
+                                {% if answer.true %} + {% else %} - {% endif %}
+                            </th>
+                            <th class="ans_cell {% if answer.student == None %} error {% endif %} {% if answer.true == answer.student %}success{% endif %}">
+                                {% if answer.student %} + {% elif answer.student == None %} Нет ответа {% else %} - {% endif %}
+                            </th>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-end pb-5">
+        <div>
+            <button type="button" id="back_btn" class="btn btn-info" style="width: 150px" >
+                Назад
+            </button>
+        </div>
+    </div>
+
+{% endblock %}

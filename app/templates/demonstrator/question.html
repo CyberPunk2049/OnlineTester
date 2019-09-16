@@ -1,10 +1,10 @@
 
 
 <div class="card my-1" >
-    <div class="card-header text-center" style="background-color:#00BFFF">
+    <div class="card-header text-center" style="background-color:#E9967A">
         {{ question1.name }}
     </div>
-    <div class="card-body" style="background-color:#87CEFA">
+    <div class="card-body" style="background-color:#E9BB7A">
         <div class="card-title">
             <div style="border-bottom: 1px solid dodgerblue;">
                 <div>
@@ -12,7 +12,7 @@
                 </div>
                 {% if question1.img_path %}
                     <div class="text-center">
-                        <img class="p-1" src="{{ url_for('media', filename=question1.img_path) }}">
+                        <img class="p-1 quest_image" src="{{ url_for('media', filename=question1.img_path) }}">
                     </div>
                 {% endif %}
             </div>
@@ -38,7 +38,7 @@
                 </div>
                 {% if question2.img_path %}
                     <div class="text-center">
-                        <img class="p-1" src="{{ url_for('media', filename=question2.img_path) }}">
+                        <img class="p-1 quest_image" src="{{ url_for('media', filename=question2.img_path) }}">
                     </div>
                 {% endif %}
             </div>

@@ -1,4 +1,3 @@
-import os
 import datetime
 from flask import Blueprint, render_template, request, current_app, redirect, url_for, session
 from app.wrappers import login_require
@@ -223,7 +222,7 @@ def test_process():
         'page_info': 'Тестирование приостановлено',
         'login_required': True,
         'errors': [],
-        'form': None
+        'form': None,
     }
 
     variant2 = {
@@ -284,6 +283,16 @@ def test_finish():
         session['test_status'] = 1
         return redirect(url_for('administrator.index'))
 
+    # Присвоем тестам статусы выполненных
+    variants = get_variants()
+    for variant in variants:
+        test = Test.query.get(variant)
+        test.completed = True
+        db.session.add(test)
+
+    db.session.commit()
+
+    # Получим параметры активного тестирования
     test_property = Test.query.get(db.session.query(db.func.max(Test.id)).scalar())
     values['theme'] = test_property.theme.name
     values['special'] = test_property.special.name

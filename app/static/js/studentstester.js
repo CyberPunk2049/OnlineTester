@@ -18,11 +18,25 @@ $(document).ready(function(){
             data: data,
             dataType: 'JSON',
             success: function (json) {
+                console.log(json.reload)
                 if (json.reload) {
+                    console.log(json.reload)
                     if (document.location.pathname = '/studentstester/test_process/'){
-                        save_answer()
+                        var data = save_answer()
+                        $.ajax({
+                            type: 'PUT',
+                            data: data,
+                            success: function () {
+                                document.location.reload()
+                            },
+                            error: function () {
+                                timerId = setTimeout(check,100)
+                            }
+                        })
+                    } else {
+                        document.location.reload()
                     }
-                    document.location.reload()
+
 
                 } else {
                     timerId = setTimeout(check,100);
@@ -87,8 +101,6 @@ function save_answer() {
             data['answer_'+i] = "False"
         }
     });
-    return $.ajax({
-        type: 'PUT',
-        data: data
-    })
+    console.log(data);
+    return data
 }

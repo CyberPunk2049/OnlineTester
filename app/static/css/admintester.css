@@ -1,0 +1,21 @@
+/*Цвет для ячеек совпадающих и отсутствующих ответов на странице ответов студента*/
+.success {
+    background-color: #66CDAA;
+}
+
+.error {
+    background-color: brown;
+}
+
+/*Ширина ячеек на странице ответов студента*/
+.ans_cell {
+    width: 10%;
+}
+
+.question_cell {
+    width: 40%;
+}
+
+.quest_image {
+    height: 170px;
+}

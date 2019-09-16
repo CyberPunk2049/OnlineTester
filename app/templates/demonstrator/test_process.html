@@ -2,26 +2,30 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block main%}
-    <div class="row">
-        <div class="p-1 m-auto text-center" style="font-size:1.5rem">
-            Тест:
-            &nbsp
-            {% if values.num != 0 %}
-                {{ values.num }}
+    {% if values.title != 'Демонстратор: Идёт теститорвание' %}
+        <div class="row">
+            <div class="p-1 m-auto text-center" style="font-size:1.5rem">
+                Тест:
                 &nbsp
-            {% endif %}
-            {{ values.theme }}
-            &nbsp
-            {{ values.special }}
+                {% if values.num != 0 %}
+                    {{ values.num }}
+                    &nbsp
+                {% endif %}
+                {{ values.theme }}
+                &nbsp
+                {{ values.special }}
+            </div>
         </div>
-    </div>
+    {% endif %}
+    <div class="row" style="height: 60px">
 
+    </div>
     <div class="row">
             <div class="p-1 m-auto text-center" style="font-size:1.2rem">
-                Вариант I ({{ values.variant1.variant }})
+                Вариант I
             </div>
             <div class="p-1 m-auto text-center" style="font-size:1.2rem">
-                Вариант II ({{ values.variant2.variant }})
+                Вариант II
             </div>
     </div>
     <div id="question" class="card-deck" quest-num={{ session.quest_num }} quest-max={{ session.quest_max }}>

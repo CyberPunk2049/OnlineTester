@@ -1,4 +1,5 @@
 from sqlalchemy import event
+from sqlalchemy.orm import relationship
 from app.database import db
 from app.demonstrator.models import Test
 
@@ -13,6 +14,8 @@ class Student(db.Model):
     email = db.Column(db.String(100))
     variant = db.Column(db.Integer)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
+    #test = relationship("Test", cascade="all, delete", backref="students")
+    student_answers = relationship("StudentAnswer", cascade="all, delete", backref="student")
 
 
 class StudentAnswer(db.Model):
@@ -22,7 +25,8 @@ class StudentAnswer(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    answer_id = db.Column(db.Integer, db.ForeignKey('answer.id'))
+    #student_answer = relationship("Student", cascade="all, delete", backref="student_answers")
+    answer_id = db.Column(db.Integer)
     value = db.Column(db.Boolean)
 
 

@@ -1,0 +1,44 @@
+{% extends "baseadmin.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block main %}
+    <div class="row justify-content-center">
+        <table id="tests" class="table table-bordered table-hover table-sm text-center mt-5">
+            {% if values.tests_list %}
+                <thead>
+                    <tr>
+                        <th scope="col">Специальность</th>
+                        <th scope="col">Тема</th>
+                        <th scope="col">№</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Время</th>
+                        <th scope="col">Участники</th>
+
+                    </tr>
+                </thead>
+            {% endif%}
+                <tbody>
+                {% for test in values.tests_list %}
+                    <tr id={{ test.6 }}>
+                        <td>{{ test.0 }}</td>
+                        <td>{{ test.1 }}</td>
+                        <td>{{ test.2 }}</td>
+                        <td>{{ test.3 }}</td>
+                        <td>{{ test.4 }}</td>
+                        <td>{{ test.5 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-end pb-5">
+        <div>
+            <button type="button" id="clear_btn" class="btn btn-danger" style="width: 150px" >
+                Очистить список
+            </button>
+            <button type="button" id="back_btn" class="btn btn-info" style="width: 150px" >
+                Назад
+            </button>
+        </div>
+    </div>
+{% endblock %}

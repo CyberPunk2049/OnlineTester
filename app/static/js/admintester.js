@@ -22,9 +22,62 @@ $(document).ready(function() {
         }
     });
 
+    // Устанавливается интервал для вызова функции обновления числа участников на странице регистрации на тестирование
     if (document.location.pathname == '/demonstrator/test_registration/') {
         var registerTimerId = setInterval(students_update, 1000);
     }
+
+    //Устанавливается обработчик кликов на строке таблице со списком выполненных тестов
+    $("#tests tr").click(function () {
+       if (this.getAttribute("id") != null){
+           var id = this.getAttribute("id")
+           document.location.assign(document.location.origin+'/estimator/test_results/?'+'test_id='+id+'&full_answer='+1)
+       }
+    });
+
+    //Устанавливается обработчик кликов на строке таблице со списком выполненных тестов
+    $("#results tr").click(function () {
+       if (this.getAttribute("id") != null){
+           var id = this.getAttribute("id")
+           document.location.assign(document.location.origin+'/estimator/student_answers/?'+'student_id='+id)
+       }
+    });
+
+    // Устанавливается обработчик кликов на radio на страние результатов теста
+    $("[name='answertype'] input").click(function () {
+        document.location.assign(document.location.origin+'/estimator/test_results/?'
+            +'test_id='+$("[name='answertype']").attr("test_id")
+            +'&full_answer='+$("[name='answertype'] input:checked").val())
+    })
+
+    // Устанавливается обработчик кликов на кнопке "Назад" в результатах
+    $("#back_btn").click(function () {
+        if (document.location.pathname == "/estimator/tests_list/") {
+            document.location.assign(document.location.origin+'/administrator/')
+        } else if (document.location.pathname == "/estimator/test_results/") {
+            document.location.assign(document.location.origin+'/estimator/tests_list/')
+        } else if (document.location.pathname == "/estimator/student_answers/") {
+            var test_id = $("#results").attr("test_id")
+            document.location.assign(document.location.origin+'/estimator/test_results/?'+'test_id='+test_id+'&full_answer='+1)
+        }
+    })
+
+    // Устанавливается обработчик кликов на кнопке "Очистить список"
+    $("#clear_btn").click(function () {
+        var clear = confirm("Вы уверены что хотите очистить список завершённых тестов по данному предменту?");
+        if (clear) {
+            $.ajax({
+                type:'DELETE',
+                success: function () {
+                    document.location.reload()
+                },
+                error: function () {
+                    alert("Не удаётся почитстить список, попробуйте ещё раз!")
+                }
+                
+            })
+        }
+    })
 
 });
 

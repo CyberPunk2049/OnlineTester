@@ -83,6 +83,7 @@ class TestsRtfdom(RTFDOM):
                     'number': re.findall(r'Задание №(\d{1,2})', test_text[i])[0],
                     'name': test_text[i],
                     'text': test_text[i + 1],
+                    'img_path': '',
                     'answers': [],
                     'answers_bool': []
                 }
@@ -198,10 +199,10 @@ class TestsRtfdom(RTFDOM):
             subject_id=session['subject'],
             num=test_num,
             variant=int(test_dict['variant']),
-            datetime=test_datetime
+            datetime=test_datetime,
         )
         db.session.add(test_model)
-        db.session.commit()
+        #db.session.commit()
         test_id = db.session.query(db.func.max(Test.id)).scalar()
         for question in test_dict['questions']:
             question_model = Question(
@@ -212,7 +213,7 @@ class TestsRtfdom(RTFDOM):
                 img_path=question['img_path']
             )
             db.session.add(question_model)
-            db.session.commit()
+            #db.session.commit()
             question_id = db.session.query(db.func.max(Question.id)).scalar()
             for i, answer in enumerate(question['answers']):
                 answer_model = Answer(

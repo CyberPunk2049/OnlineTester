@@ -1,0 +1,80 @@
+{% extends "baseadmin.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block main %}
+    <div class="row">
+        <div class="p-1 m-auto text-center" style="font-size:1.5rem">
+            Тест:
+            &nbsp
+            {% if values.num != 0 %}
+                {{ values.num }}
+                &nbsp
+            {% endif %}
+            {{ values.theme }}
+            &nbsp
+            {{ values.special }}
+        </div>
+    </div>
+    <div name="answertype" test_id={{ values.test_id }} class="row justify-content-around mt-3">
+        {% if values.test_results %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="answertypeinput" id="fullanswer" value=1
+                    {% if values.full_answer %}
+                        checked
+                    {% endif %}
+                >
+                <label class="form-check-label" for="fullanswer">
+                    В результат теста засчитывать только полные ответы
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="answertypeinput" id="partanswer" value=0
+                    {% if not values.full_answer %}
+                        checked
+                    {% endif %}
+                >
+                <label class="form-check-label" for="partanswer">
+                    В результат теста засчитывать частичные ответы
+                </label>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row justify-content-center mt-2">
+        <table id="results" class="table table-bordered table-hover table-sm text-center">
+            {% if values.test_results %}
+                <thead>
+                    <tr>
+                        <th scope="col">№ студ.бил.</th>
+                        <th scope="col">Группа</th>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Вариант</th>
+                        <th scope="col">Учтённые ответы</th>
+                        <th scope="col">Результат</th>
+
+                    </tr>
+                </thead>
+            {% endif %}
+            <tbody>
+                {% for result in values.test_results %}
+                    <tr id={{ result.id }}>
+                        <td>{{ result.student_id }}</td>
+                        <td>{{ result.group }}</td>
+                        <td>{{ result.surname }}&nbsp;{{ result.name }}&nbsp;{{ result.patronymic }}</td>
+                        <td>{{ result.email }}</td>
+                        <td>{{ result.variant }}</td>
+                        <td>{{ result.counted_answers }} из {{ result.total_number }}</td>
+                        <td>{{ result.grade_percent }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="row justify-content-end pb-5">
+        <div>
+            <button type="button" id="back_btn" class="btn btn-info" style="width: 150px" >
+                Назад
+            </button>
+        </div>
+    </div>
+{% endblock %}

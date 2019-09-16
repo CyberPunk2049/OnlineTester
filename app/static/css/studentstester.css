@@ -4,7 +4,7 @@ body {
 }
 
 .variant1 {
-    background-color: #00BFFF;
+    background-color: #E9967A;
 }
 
 .variant2 {
@@ -14,12 +14,12 @@ body {
 .button_variant1 {
     width: 200px;
     height: 80px;
-    background-color: #00BFFF;
+    background-color: #E9967A;
     cursor: pointer
 }
 
 .button_variant1:hover {
-    background-color: #0099CC;
+    background-color: #CC7755;
 }
 
 .button_variant2 {
