@@ -10,6 +10,10 @@ body {
 .variant2 {
     background-color: #66CDAA;
 }
+
+.blink {
+    background-color: white; !important;
+}
 /*Кнопки выбора варианта*/
 .button_variant1 {
     width: 200px;

@@ -28,6 +28,7 @@ $(document).ready(function(){
                             data: data,
                             success: function () {
                                 document.location.reload()
+                                blink()
                             },
                             error: function () {
                                 timerId = setTimeout(check,100)
@@ -103,4 +104,13 @@ function save_answer() {
     });
     console.log(data);
     return data
+}
+
+//Функция на короткое время делает фон экрана белым
+function blink() {
+    $("body").addClass('blink').
+    setTimeout(function () {
+        $("body").removeClass('blink')
+    }, 500)
+
 }

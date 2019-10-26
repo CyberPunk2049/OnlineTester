@@ -28,7 +28,11 @@
                         {{ values.form.variant2.label(class="form-control-label") }}
                         {{ values.form.variant2(class="form-control") }}
                 </div>
-                <div class="form-group text-center">
+                <!--
+                    Скрытый элемент формы, при активации предоставляет возможность выбирать между старой и новой
+                    версией теста. По умолчанию установлена новая версия теста.
+                -->
+                <div class="form-group text-center" style="visibility: hidden">
                     {% for subfield in values.form.version %}
                         <div class="form-check form-check-inline">
                             {{ subfield(class="form-check-input") }}
@@ -36,6 +40,7 @@
                         </div>
                     {% endfor %}
                 </div>
+                <!-- -->
                 <div class="row text-center py-2">
                     <div class="col">
                         {{ values.form.submit(class="btn btn-success") }}
