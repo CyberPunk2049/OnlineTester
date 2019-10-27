@@ -31,7 +31,6 @@ class Test(db.Model):
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     test_id = db.Column(db.Integer, db.ForeignKey('test.id'))
-    #test = relationship("Test", cascade="all, delete", backref="questions")
     num = db.Column(db.Integer)
     name = db.Column(db.String())
     text = db.Column(db.String())
@@ -43,7 +42,6 @@ class Question(db.Model):
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    #question = relationship("Question", cascade="all, delete", backref="answers")
     num = db.Column(db.Integer)
     text = db.Column(db.String())
     value = db.Column(db.Boolean())
