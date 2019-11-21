@@ -4,11 +4,15 @@ body {
 }
 
 .variant1 {
-    background-color: #E9967A;
+    /*background-color: #E9967A;*/
+    background-color: #5a3925;
+    color: white;
 }
 
 .variant2 {
-    background-color: #66CDAA;
+    /*background-color: #66CDAA;*/
+    background-color: #2d5a41;
+    color:white;
 }
 
 .blink {
@@ -49,5 +53,5 @@ body {
 }
 
 .button_answ_on {
-    background-color: #0099CC;
+    background-color: #005572;
 }

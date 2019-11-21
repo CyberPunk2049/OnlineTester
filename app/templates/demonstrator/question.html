@@ -1,23 +1,21 @@
 
 
-<div class="card my-1" >
-    <div class="card-header text-center" style="background-color:#E9967A">
-        {{ question1.name }}
+<div class="card question_var_1" >
+    <div class="card-header text-center header_var_1">
+        Вариант I   :   {{ question1.name }}
     </div>
-    <div class="card-body" style="background-color:#E9BB7A">
-        <div class="card-title">
-            <div style="border-bottom: 1px solid dodgerblue;">
-                <div>
-                    {{ question1.text }}
-                </div>
-                {% if question1.img_path %}
-                    <div class="text-center">
-                        <img class="p-1 quest_image" src="{{ url_for('media', filename=question1.img_path) }}">
-                    </div>
-                {% endif %}
+    <div class="card-body body_var_1">
+        <div class="question_title">
+            <div>
+                {{ question1.text }}
             </div>
+            {% if question1.img_path %}
+                <div class="text-center">
+                    <img class="p-1 quest_image" src="{{ url_for('media', filename=question1.img_path) }}">
+                </div>
+            {% endif %}
         </div>
-        <div class="card-text">
+        <div class="question_text">
             <ol>
                 {% for answer in question1.answers %}
                     <li>{{ answer }}</li>
@@ -26,13 +24,13 @@
         </div>
     </div>
 </div>
-<div class=" card my-1">
-    <div class="card-header text-center" style="background-color:#66CDAA">
-        {{ question2.name }}
+<div class="card question_var_2">
+    <div class="card-header text-center header_var_2">
+        Вариант II   :   {{ question2.name }}
     </div>
-    <div class="card-body" style="background-color:#7FFFD4">
-        <div class="card-title">
-            <div style="border-bottom: 1px solid lightgreen;">
+    <div class="card-body body_var_2">
+        <div>
+            <div class="question_title">
                 <div>
                     {{ question2.text }}
                 </div>
@@ -42,13 +40,13 @@
                     </div>
                 {% endif %}
             </div>
-        </div>
-        <div class="card-text">
-            <ol>
-                {% for answer in question2.answers %}
-                    <li>{{ answer }}</li>
-                {% endfor %}
-            </ol>
+            <div class="question_text">
+                <ol>
+                    {% for answer in question2.answers %}
+                        <li>{{ answer }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
         </div>
     </div>
 </div>

@@ -1,3 +1,57 @@
+/*Параметры вопросов демонстратора по вариантам*/
+ol li {
+    margin-top: 0.5rem ;
+}
+
+.questions_box {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+
+}
+
+.question_title {
+    padding-bottom: 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.question_text {
+    margin: 0.5rem;
+}
+.question_var_1 {
+    background-color: #5a3925;
+    height: 100%;
+    margin: 1px 1px 0px 0px !important;
+    line-height: 1;
+    font-size: 15pt;
+    color: white;
+}
+.question_var_2 {
+    background-color: #2d5a41;
+    height: 100%;
+    margin: 1px 0px 1px 0px !important;
+    line-height: 1;
+    font-size: 15pt;
+    color: white;
+}
+
+.header_var_1 {
+    padding: 0.25rem;
+}
+
+.header_var_2 {
+    padding: 0.25rem;
+}
+
+.body_var_1 {
+    padding: 0.5rem;
+}
+
+.body_var_2 {
+    padding: 0.5rem;
+}
+
 /*Цвет для ячеек совпадающих и отсутствующих ответов на странице ответов студента*/
 .success {
     background-color: #66CDAA;
@@ -19,3 +73,4 @@
 .quest_image {
     height: 170px;
 }
+

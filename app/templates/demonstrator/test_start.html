@@ -24,6 +24,8 @@
             </div>
     </div>
     {% for num in range(values.quest_num) %}
+        <div class="row" style="height: 10px">
+        </div>
         <div class="card-deck">
             {% with question1 = values.variant1.questions[num], question2 = values.variant2.questions[num] %}
                 {% include 'demonstrator/question.html' %}

@@ -4,7 +4,6 @@ from app.database import db
 import random
 from app.administrator.models import User, Sessions, Subject, TestStatus
 from app.demonstrator.models import Theme, Special
-from app.studentstester.models import Student, StudentAnswer
 
 # Скрипт для создания и заполнения фиксированных таблиц в базе данных.
 
@@ -25,6 +24,7 @@ with app.app_context():
     db.session.commit()
 
     themes = [
+        'Быстрое тестирование',
         'Коллоквиум',
         'Экзамен',
         'Зачёт',
