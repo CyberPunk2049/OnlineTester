@@ -7,7 +7,7 @@ from app.demonstrator.models import Theme, Special
 
 # Скрипт для создания и заполнения фиксированных таблиц в базе данных.
 
-app = create_app(config.DevelopmentConfig)
+app = create_app(config.ProductionConfig)
 
 
 with app.app_context():
