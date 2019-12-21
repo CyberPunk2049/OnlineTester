@@ -31,7 +31,7 @@ $(document).ready(function(){
                                 blink()
                             },
                             error: function () {
-                                timerId = setTimeout(check,100)
+                                timerId = setTimeout(check,1000)
                             }
                         })
                     } else {
@@ -40,16 +40,16 @@ $(document).ready(function(){
 
 
                 } else {
-                    timerId = setTimeout(check,100);
+                    timerId = setTimeout(check,1000);
                 }
             },
             error: function () {
                 alert("Соединение утеряно, нажмите ОК, чтобы проверить ещё раз!");
-                timerId = setTimeout(check,100)
+                timerId = setTimeout(check,1000)
             }
         })
 
-    }, 100);
+    }, 1000);
 
     //На странице выбора варианта устанавливаются обработчики кликов на кнопки с вариантами
     $(".button_variant1").click(click_variant);
@@ -111,6 +111,6 @@ function blink() {
     $("body").addClass('blink').
     setTimeout(function () {
         $("body").removeClass('blink')
-    }, 500)
+    }, 1000)
 
 }
